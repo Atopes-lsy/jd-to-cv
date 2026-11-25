@@ -1,0 +1,4 @@
+interface:
+  display_name: "岗位知识库与简历"
+  short_description: "归档与检索岗位要求，结合用户自己的项目证据定制简历并关联 PDF 版本"
+  default_prompt: "使用 $jd-to-cv，将这份岗位要求加入我的本地知识库，并结合我的项目证据生成匹配简历。"

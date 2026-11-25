@@ -1,0 +1,17 @@
+{
+  "company": "示例公司（虚构）",
+  "title": "前端开发实习生（示例）",
+  "location": "示例城市",
+  "source_url": "",
+  "direction": "前端",
+  "raw_text": "【虚构示例，非真实招聘】参与业务页面开发。熟悉 JavaScript、React，了解 TypeScript 优先；每周到岗至少三天。",
+  "attachments": [],
+  "tags": ["JavaScript", "React", "TypeScript"],
+  "requirements": [
+    {"text": "熟悉 JavaScript、React", "type": "hard", "source_quote": "熟悉 JavaScript、React"},
+    {"text": "了解 TypeScript", "type": "preferred", "source_quote": "了解 TypeScript 优先"}
+  ],
+  "matches": [],
+  "gaps": [],
+  "extraction_note": "仅供命令演示，请导入临时示例库。"
+}

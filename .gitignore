@@ -1,0 +1,17 @@
+# Local JD archives, resumes, and personal feedback stay on this device.
+knowledge-base/
+data/
+private/
+output/
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store
+Thumbs.db

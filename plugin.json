@@ -1,0 +1,8 @@
+{
+  "name": "jd-to-cv",
+  "version": "0.1.0",
+  "description": "A local JD knowledge base and evidence-based resume workflow for Codex.",
+  "author": {"name": "Atopes-lsy"},
+  "repository": "https://github.com/Atopes-lsy/jd-to-cv",
+  "license": "MIT"
+}
