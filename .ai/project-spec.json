@@ -1,0 +1,144 @@
+{
+  "project": {
+    "name": "JD to CV desktop and mobile MVP",
+    "goal": "Screenshot to evidence-based resume without a ChatGPT account",
+    "target_users": [
+      "Chinese internship applicants",
+      "opt-in pilot users"
+    ],
+    "success_metrics": [
+      {
+        "metric": "P0 workflow tests",
+        "target": "all pass with synthetic provider"
+      }
+    ]
+  },
+  "constraints": {
+    "reuse_existing_stack": true,
+    "deployment_target": "local preview first, Sites Worker after acceptance",
+    "external_services": [
+      "DeepSeek Flash",
+      "optional user API key"
+    ],
+    "budget": "platform funded maximum CNY 5 per Asia/Shanghai day; no real calls until key configured"
+  },
+  "scope": {
+    "mvp_must_have": [
+      {
+        "id": "MVP-01",
+        "name": "Responsive screenshot intake",
+        "acceptance": [
+          "drop/pick PNG JPEG WebP and paste JD text",
+          "preview before sending"
+        ]
+      },
+      {
+        "id": "MVP-02",
+        "name": "Provider and sponsored budget",
+        "acceptance": [
+          "no ChatGPT login",
+          "key never persisted or returned",
+          "atomic reservation enforces 5 yuan daily ceiling"
+        ]
+      },
+      {
+        "id": "MVP-03",
+        "name": "Personal profile and resume",
+        "acceptance": [
+          "editable profile and extracted JD",
+          "editable resume preview and print-to-PDF",
+          "profile image preview, explicit transcription, append and confirm before local save"
+        ]
+      },
+      {
+        "id": "MVP-04",
+        "name": "Local knowledge base",
+        "acceptance": [
+          "device-local original JD and image",
+          "deduplication and explicit revisions",
+          "search and export backup"
+        ]
+      },
+      {
+        "id": "MVP-05",
+        "name": "Consent and feedback",
+        "acceptance": [
+          "analytics disabled by default",
+          "aggregate events contain no identity or JD",
+          "explicit feedback submission"
+        ]
+      },
+      {
+        "id": "MVP-06",
+        "name": "Desktop distribution",
+        "acceptance": [
+          "Windows executable starts local UI without Python installation",
+          "no secret in executable"
+        ]
+      }
+    ],
+    "out_of_scope": [
+      "WeChat chat reading",
+      "automatic BOSS access",
+      "automatic job applications",
+      "user registration",
+      "cross-device private-data sync",
+      "real sensitive test data",
+      "production release before MVP review"
+    ],
+    "bonus_modules": []
+  },
+  "roles_and_data": {
+    "roles": [
+      "anonymous visitor",
+      "local user",
+      "operator"
+    ],
+    "sensitive_data": [
+      "API keys",
+      "profile",
+      "JD screenshots"
+    ],
+    "retention_rules": [
+      "profile and JD remain device-local",
+      "provider receives inputs only after explicit action",
+      "keys transient",
+      "opt-in aggregate telemetry only",
+      "active feedback stored separately"
+    ]
+  },
+  "design": {
+    "style_keywords": [
+      "clear",
+      "navy",
+      "teal",
+      "task-focused"
+    ],
+    "reference_paths": [],
+    "viewports": [
+      {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      }
+    ]
+  },
+  "human_approvals": {
+    "g0_mvp_scope": "approved",
+    "g1_architecture": "approved",
+    "g2_mvp_acceptance": "pending",
+    "g4_review_triage": "pending",
+    "g5_release": "pending"
+  },
+  "approval_evidence": [
+    "user selected desktop + API key + screenshot drag",
+    "user additionally selected mobile web and opt-in anonymous analytics",
+    "user chose DeepSeek Flash sponsored pilot capped at CNY 5/day",
+    "user additionally requested personal-profile image import"
+  ]
+}

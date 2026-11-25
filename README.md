@@ -2,7 +2,45 @@
 
 **把岗位收藏变成可检索的知识库，用真实项目证据生成有针对性的简历。**
 
-面向 Codex 的可复用 Skill 与本地 Python 工具。支持中文岗位、JD 原件归档、版本追踪、简历关联和关键词检索，数据由用户本地管理。
+包含无需登录 ChatGPT 的桌面/手机网页原型，以及可独立使用的 Codex Skill 与本地知识库 CLI。支持中文岗位、截图识别、个人资料图片导入、版本追踪、简历预览和关键词检索。
+
+## 桌面与手机网页原型（0.2 开发版）
+
+同一界面支持电脑拖入截图、手机相册选图；个人资料也可用图片识别，先预览、明确发送，再核对并保存文字。可使用平台内测额度，或填写自己的 DeepSeek / OpenAI API Key，无需 ChatGPT 登录。
+
+- 用户资料和网页岗位库在当前浏览器的 IndexedDB，不跨设备自动同步；支持导出/导入备份。资料图片不自动归档，岗位原图会随收藏保留。
+- 识别和生成通过后台转发给所选模型，API Key 不写入数据库、配置文件或日志；用户自己的 Key 刷新即清除。
+- 简历正文可编辑，支持保存 HTML 源稿，以及调用设备打印功能保存 PDF。手机上的具体打印/保存方式取决于浏览器；未承诺系统分享菜单接入。
+- 平台内测固定 DeepSeek Flash，每日最多预留 ¥5；仅部署端设置 `DEEPSEEK_API_KEY` 才启用。每次请求保守预留 ¥0.25，最多 20 次/北京时间日，失败也不返还预留；不是每次实际收费 ¥0.25。
+- 匿名汇总统计默认关闭，主动反馈另行授权。网页版可集中收集；桌面本机版的统计与反馈只留本机。
+
+开发预览（仅标准库，不需要安装模型 SDK）：
+
+```sh
+python -m desktop.server
+# 浏览器打开 http://127.0.0.1:8765
+```
+
+Windows 桌面入口和打包：
+
+```powershell
+python -m desktop.launcher
+python -m venv .venv
+./.venv/Scripts/python.exe -m pip install -r requirements-desktop.txt
+./scripts/build-desktop.ps1
+```
+
+输出 `dist/JD-to-CV-Windows.zip`，解压整个目录后双击 `JD-to-CV.exe`。入口启动仅绑定回环地址的本地服务，并在默认浏览器打开界面；关闭入口窗口停止服务。无需用户安装 Python、Codex 或 LaTeX。当前测试包未签名、未发布到 GitHub Releases。
+
+网页构建及 Worker 测试（Node 24，无 npm 依赖）：
+
+```sh
+cd webapp
+npm run build
+npm test
+```
+
+托管、内测额度和数据边界见 [内测部署说明](docs/PILOT-DEPLOY.md)。正式公开发布和二维码分发需先完成 MVP 验收及配置运行时 Key；源码中的清单不代表网站已上线。
 
 ## 当前能做什么
 
@@ -13,7 +51,7 @@
 - Codex 根据用户自己的资料和仓库证据选择项目，定制简历内容，生成和检查 PDF。
 - 将 PDF、源稿、匹配说明和用户提供的反馈关联到精确岗位版本，保存文件副本与 SHA256。
 
-**阶段：0.1.0，本地优先的 Skill + CLI。** AI 提取与简历生成由 Codex 执行；Python 脚本只负责知识库，不独立调用模型，不做 OCR 或 PDF 排版。仓库包含插件清单，未发布到插件市场；最直接的使用方式是安装下面的 Skill。当前没有 Web 界面、BOSS 自动采集、向量检索、自动投递、加密或数据擦除接口。
+**下面的 Skill + CLI 用法仍独立可用。** CLI 脚本只负责知识库；Skill 模式由 Codex 执行 AI 工作。0.2 桌面/网页模式直接调用模型 API，不依赖 Codex。网页 IndexedDB 与 CLI SQLite 是两个独立数据存储，旧 CLI 库不会被自动覆盖或迁移。当前没有 BOSS 自动采集、向量检索、自动投递或跨设备同步。
 
 ## 安装 Skill
 

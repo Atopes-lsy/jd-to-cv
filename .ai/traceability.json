@@ -1,0 +1,9 @@
+{
+  "MVP-01": {"status":"local_pass","evidence":["qa-browser.js","qa-browser-recovery.js"]},
+  "MVP-02": {"status":"local_pass","evidence":["13 Worker tests","4 desktop tests","real-provider synthetic workflow"]},
+  "MVP-03": {"status":"local_pass","evidence":["qa-profile-image.js","qa-resume-history.js","synthetic-resume.pdf"]},
+  "MVP-04": {"status":"local_pass","evidence":["8 CLI archive tests","qa-archive.js","roundtrip-backup.json"]},
+  "MVP-05": {"status":"local_pass","evidence":["consent/feedback unit tests","qa-browser.js"]},
+  "MVP-06": {"status":"local_pass","evidence":["package-report.json","packaged smoke exit0"]},
+  "release": {"status":"pending_human_acceptance","unverified":["public hosting","clean Windows","physical phone","feedback retention policy"]}
+}

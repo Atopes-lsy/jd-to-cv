@@ -1,0 +1,30 @@
+async (page) => {
+  const check = (value, message) => { if (!value) throw new Error(message); };
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.locator('[data-page="workspace"]').click();
+  await page.locator('#new-job').click();
+  await page.locator('#image-file').setInputFiles('examples/synthetic-jd.png');
+  await page.waitForFunction(() => !document.querySelector('#image-preview').hidden);
+  await page.route('**/api/model', async route => { await new Promise(resolve => setTimeout(resolve, 2200)); await route.continue(); });
+  await page.locator('#extract').click();
+  await page.waitForFunction(() => document.querySelector('#extract').disabled);
+  check(await page.locator('#new-job').isDisabled(), 'New intake can replace active request');
+  await page.screenshot({ path: 'output/playwright/mobile-loading.png', fullPage: true });
+  await page.waitForFunction(() => !document.querySelector('#extract').disabled);
+  await page.unroute('**/api/model');
+  await page.route('**/api/model', route => route.fulfill({ status: 502, contentType: 'application/json', body: JSON.stringify({ error: '合成测试：模型暂时不可用，请稍后重试。' }) }));
+  await page.locator('#extract').click();
+  await page.waitForFunction(() => document.querySelector('#notice').textContent.includes('模型暂时不可用'));
+  check(!(await page.locator('#extract').isDisabled()), 'UI did not recover from provider error');
+  await page.screenshot({ path: 'output/playwright/mobile-error.png', fullPage: true });
+  await page.unroute('**/api/model');
+  await page.locator('[data-page="library"]').click();
+  const before = await page.locator('.job-card').count();
+  const downloading = page.waitForEvent('download'); await page.locator('#backup').click();
+  const download = await downloading; await download.saveAs('output/playwright/browser-backup.json');
+  await page.locator('#restore').setInputFiles('output/playwright/browser-backup.json');
+  await page.waitForFunction((count) => document.querySelectorAll('.job-card').length === count * 2, before);
+  check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'Mobile overflow after restore');
+  await page.screenshot({ path: 'output/playwright/mobile-restored.png', fullPage: true });
+  return { passed: true, workflows: ['mobile picker', 'disabled/loading state', 'provider failure recovery', 'browser backup download and restore'] };
+}

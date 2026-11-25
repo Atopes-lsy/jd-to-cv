@@ -1,0 +1,15 @@
+import { readFile, writeFile, mkdir, cp } from 'node:fs/promises';
+import { resolve } from 'node:path';
+const root = resolve(import.meta.dirname, '..');
+const assets = {};
+for (const [path, name, type] of [['/', 'index.html', 'text/html; charset=utf-8'], ['/app.js', 'app.js', 'text/javascript; charset=utf-8'], ['/style.css', 'style.css', 'text/css; charset=utf-8']]) assets[path] = { body: await readFile(resolve(root, 'public', name), 'utf8'), type };
+const prompts = JSON.parse(await readFile(resolve(root, 'prompts.json'), 'utf8'));
+let worker = await readFile(resolve(root, 'worker/index.js'), 'utf8');
+worker = worker.replace("import { AppError, EVENTS, callModel, dayKey, reserve, validate } from './service.js';", '');
+worker = (await readFile(resolve(root, 'worker/service.js'), 'utf8')).replaceAll('export ', '') + '\n' + worker.replace('__ASSETS__', JSON.stringify(assets)).replace('__PROMPTS__', JSON.stringify(prompts));
+await mkdir(resolve(root, 'dist/server'), { recursive: true });
+await writeFile(resolve(root, 'dist/server/index.js'), worker);
+await cp(resolve(root, 'drizzle'), resolve(root, 'dist/server/drizzle'), { recursive: true });
+await mkdir(resolve(root, 'dist/.openai'), { recursive: true });
+await cp(resolve(root, '.openai/hosting.json'), resolve(root, 'dist/.openai/hosting.json'));
+console.log('Built self-contained Worker and schema migrations.');

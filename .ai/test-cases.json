@@ -1,0 +1,208 @@
+{
+  "defaults": {
+    "base_url": "http://127.0.0.1:8765",
+    "allow_production_tests": false,
+    "locale": "zh-CN",
+    "timezone": "Asia/Shanghai",
+    "timeout_ms": 110000,
+    "retries": 0,
+    "viewports": [
+      {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "name": "desktop",
+        "width": 1440,
+        "height": 1000
+      }
+    ]
+  },
+  "personas": [
+    {
+      "id": "synthetic-user",
+      "role": "anonymous",
+      "fixture": "synthetic only"
+    }
+  ],
+  "cases": [
+    {
+      "id": "INTAKE-01",
+      "requirement_ids": [
+        "MVP-01"
+      ],
+      "module": "MVP-01",
+      "priority": "P0",
+      "type": "ui",
+      "preconditions": [
+        "local synthetic provider; no real API calls"
+      ],
+      "persona": "synthetic-user",
+      "input": {
+        "fixture": "synthetic-jd.png and fictional profile"
+      },
+      "steps": [
+        "drop synthetic-jd.png",
+        "recognize using synthetic provider"
+      ],
+      "expected": {
+        "visible": [
+          "合成测试公司",
+          "前端开发实习"
+        ],
+        "original_saved": true
+      },
+      "cleanup": [
+        "temporary tests auto-clean; browser fixtures retained locally for review"
+      ]
+    },
+    {
+      "id": "BUDGET-01",
+      "requirement_ids": [
+        "MVP-02"
+      ],
+      "module": "MVP-02",
+      "priority": "P0",
+      "type": "concurrency",
+      "preconditions": [
+        "local synthetic provider; no real API calls"
+      ],
+      "persona": "synthetic-user",
+      "input": {
+        "fixture": "synthetic-jd.png and fictional profile"
+      },
+      "steps": [
+        "attempt 80 reservations concurrently",
+        "restart local store"
+      ],
+      "expected": {
+        "accepted": 20,
+        "maximum_reserved_yuan": 5,
+        "extra_requests": 429
+      },
+      "cleanup": [
+        "temporary tests auto-clean; browser fixtures retained locally for review"
+      ]
+    },
+    {
+      "id": "RESUME-01",
+      "requirement_ids": [
+        "MVP-03"
+      ],
+      "module": "MVP-03",
+      "priority": "P0",
+      "type": "ui",
+      "preconditions": [
+        "local synthetic provider; no real API calls"
+      ],
+      "persona": "synthetic-user",
+      "input": {
+        "fixture": "synthetic-jd.png and fictional profile"
+      },
+      "steps": [
+        "save synthetic profile",
+        "generate",
+        "edit heading",
+        "reopen archive",
+        "print PDF"
+      ],
+      "expected": {
+        "edited_text_persisted": true,
+        "pdf_pages": 1
+      },
+      "cleanup": [
+        "temporary tests auto-clean; browser fixtures retained locally for review"
+      ]
+    },
+    {
+      "id": "ARCHIVE-01",
+      "requirement_ids": [
+        "MVP-04"
+      ],
+      "module": "MVP-04",
+      "priority": "P0",
+      "type": "integration",
+      "preconditions": [
+        "local synthetic provider; no real API calls"
+      ],
+      "persona": "synthetic-user",
+      "input": {
+        "fixture": "synthetic-jd.png and fictional profile"
+      },
+      "steps": [
+        "ingest duplicate",
+        "append changed revision",
+        "query latest",
+        "export backup"
+      ],
+      "expected": {
+        "duplicates": 1,
+        "history_preserved": true
+      },
+      "cleanup": [
+        "temporary tests auto-clean; browser fixtures retained locally for review"
+      ]
+    },
+    {
+      "id": "CONSENT-01",
+      "requirement_ids": [
+        "MVP-05"
+      ],
+      "module": "MVP-05",
+      "priority": "P0",
+      "type": "security",
+      "preconditions": [
+        "local synthetic provider; no real API calls"
+      ],
+      "persona": "synthetic-user",
+      "input": {
+        "fixture": "synthetic-jd.png and fictional profile"
+      },
+      "steps": [
+        "submit without consent",
+        "submit telemetry with extra personal field",
+        "submit authorized event and feedback"
+      ],
+      "expected": {
+        "unconsented_status": 400,
+        "extra_field_status": 400,
+        "aggregate_columns": [
+          "day",
+          "event",
+          "count"
+        ]
+      },
+      "cleanup": [
+        "temporary tests auto-clean; browser fixtures retained locally for review"
+      ]
+    },
+    {
+      "id": "DESKTOP-01",
+      "requirement_ids": [
+        "MVP-06"
+      ],
+      "module": "MVP-06",
+      "priority": "P0",
+      "type": "integration",
+      "preconditions": [
+        "local synthetic provider; no real API calls"
+      ],
+      "persona": "synthetic-user",
+      "input": {
+        "fixture": "synthetic-jd.png and fictional profile"
+      },
+      "steps": [
+        "build Windows package",
+        "execute packaged --smoke-test"
+      ],
+      "expected": {
+        "exit_code": 0,
+        "bundled_assets": true
+      },
+      "cleanup": [
+        "temporary tests auto-clean; browser fixtures retained locally for review"
+      ]
+    }
+  ]
+}
